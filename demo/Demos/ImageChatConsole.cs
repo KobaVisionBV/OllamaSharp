@@ -95,16 +95,41 @@ public partial class ImageChatConsole(IOllamaApiClient ollama) : OllamaConsole(o
 							AnsiConsole.MarkupLine($"[{HintTextColor}]The images were scaled down for the console only, the model gets full versions.[/]");
 						AnsiConsole.WriteLine();
 
+						bool first = true;
+						var sw = System.Diagnostics.Stopwatch.StartNew();
 						await foreach (var answerToken in chat.SendAsync(message, imageBytes))
+						{
+							if (first)
+							{
+								first = false;
+								var el2 = sw.Elapsed;
+								AnsiConsole.MarkupLine($"[{HintTextColor}]Start of response: {el2.TotalMinutes:00}:{el2.Seconds:00}.{el2.Milliseconds / 10:00}[/]");
+							}
+							first = false;
 							AnsiConsole.MarkupInterpolated($"[{AiTextColor}]{answerToken}[/]");
+						}
+						var el = sw.Elapsed;
+						AnsiConsole.WriteLine();
+						AnsiConsole.MarkupLine($"[{HintTextColor}]End of response: {el.TotalMinutes:00}:{el.Seconds:00}.{el.Milliseconds / 10:00}[/]");
 					}
 					else
 					{
+						bool first = true;
+						var sw = System.Diagnostics.Stopwatch.StartNew();
 						await foreach (var answerToken in chat.SendAsync(message))
+						{
+							if (first)
+							{
+								first = false;
+								var el2 = sw.Elapsed;
+								AnsiConsole.MarkupLine($"[{HintTextColor}]Start of response: {el2.TotalMinutes:00}:{el2.Seconds:00}.{el2.Milliseconds / 10:00}[/]");
+							}
 							AnsiConsole.MarkupInterpolated($"[{AiTextColor}]{answerToken}[/]");
+						}
+						var el = sw.Elapsed;
+						AnsiConsole.WriteLine();
+						AnsiConsole.MarkupLine($"[{HintTextColor}]End of response: {el.TotalMinutes:00}:{el.Seconds:00}.{el.Milliseconds / 10:00}[/]");
 					}
-
-					AnsiConsole.WriteLine();
 				} while (!string.IsNullOrEmpty(message));
 			} while (keepChatting);
 		}
