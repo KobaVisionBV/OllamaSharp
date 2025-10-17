@@ -31,7 +31,7 @@ do
 
 	try
 	{
-		ollama = new OllamaApiClient(url);
+		ollama = new OllamaApiClient(new HttpClient() { BaseAddress = uri, Timeout = Timeout.InfiniteTimeSpan });
 		connected = await ollama.IsRunningAsync();
 
 		var models = await ollama.ListLocalModelsAsync();
