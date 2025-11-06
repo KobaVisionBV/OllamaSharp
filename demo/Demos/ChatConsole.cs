@@ -61,13 +61,13 @@ public class ChatConsole(IOllamaApiClient ollama) : OllamaConsole(ollama)
 						{
 							first = false;
 							var el2 = sw.Elapsed;
-							AnsiConsole.MarkupLine($"[{HintTextColor}]Start of response: {el2.TotalMinutes:00}:{el2.Seconds:00}.{el2.Milliseconds / 10:00}[/]");
+							AnsiConsole.MarkupLine($"[{HintTextColor}]Start of response: {(int)el2.TotalMinutes:00}:{el2.Seconds:00}.{el2.Milliseconds / 10:00}[/]");
 						}
 						AnsiConsole.MarkupInterpolated($"[{AiTextColor}]{answerToken}[/]");
 					}
 					var el = sw.Elapsed;
 					AnsiConsole.WriteLine();
-					AnsiConsole.MarkupLine($"[{HintTextColor}]End of response: {el.TotalMinutes:00}:{el.Seconds:00}.{el.Milliseconds / 10:00}[/]");
+					AnsiConsole.MarkupLine($"[{HintTextColor}]End of response: {(int)el.TotalMinutes:00}:{el.Seconds:00}.{el.Milliseconds / 10:00}[/]");
 				} while (!string.IsNullOrEmpty(message));
 			} while (keepChatting);
 		}
